@@ -24,8 +24,8 @@ insert data {
     x2rm:XmlAttribute rdfs:subClassOf x2rm:XmlElement .
     
     x2rm:isChildOf owl:inverseOf x2rm:hasChild .
-    x2rm:isAttributeOf owl:inverseOf x2rm:hasAttribute .
-	x2rm:isXPathOf owl:inverseOf x2rm:hasXPath .
+    x2rm:isAttributeOf owl:inverseOf x2rm:hasAttribute .
+    x2rm:isXPathOf owl:inverseOf x2rm:hasXPath .
 }
 ```
 # Docker
