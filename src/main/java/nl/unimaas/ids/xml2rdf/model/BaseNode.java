@@ -3,8 +3,6 @@ package nl.unimaas.ids.xml2rdf.model;
 import java.text.DecimalFormat;
 
 import org.eclipse.rdf4j.model.IRI;
-import org.eclipse.rdf4j.model.ValueFactory;
-import org.eclipse.rdf4j.model.impl.SimpleValueFactory;
 
 abstract class BaseNode {
 	
