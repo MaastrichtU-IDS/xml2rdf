@@ -32,7 +32,8 @@ public class Xml2RdfConverter {
 	}
 	
 	public Xml2RdfConverter doWork() throws XMLStreamException, UnsupportedRDFormatException, IOException {
-		RDFWriter rdfWriter = Rio.createWriter(RDFFormat.NTRIPLES, new GZIPOutputStream(new FileOutputStream(outputFile, false)));
+		GZIPOutputStream gzipOutputStream = new GZIPOutputStream(new FileOutputStream(outputFile, false));
+		RDFWriter rdfWriter = Rio.createWriter(RDFFormat.NTRIPLES, gzipOutputStream);
 		rdfWriter.startRDF();
 		
 		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
@@ -58,6 +59,7 @@ public class Xml2RdfConverter {
 		
 		xmlStreamReader.close();
 		rdfWriter.endRDF();
+		gzipOutputStream.close();
 		
 		return this;
 	}
