@@ -14,7 +14,7 @@ insert data {
     x2rm:XmlElement a rdfs:type ;
         rdf:Property x2rm:hasName ;
         rdf:Property x2rm:hasValue ;
-		rdf:Property x2rm:hasXPath .
+	rdf:Property x2rm:hasXPath .
 		
     
     x2rm:XmlNode rdfs:subClassOf x2rm:XmlElement ;
@@ -25,7 +25,7 @@ insert data {
     
     x2rm:isChildOf owl:inverseOf x2rm:hasChild .
     x2rm:isAttributeOf owl:inverseOf x2rm:hasAttribute .
-	x2rm:isXPathOf owl:inverseOf x2rm:hasXPath
+	x2rm:isXPathOf owl:inverseOf x2rm:hasXPath .
 }
 ```
 # Docker
