@@ -16,7 +16,6 @@ insert data {
         rdf:Property x2rm:hasValue ;
 	rdf:Property x2rm:hasXPath .
 		
-    
     x2rm:XmlNode rdfs:subClassOf x2rm:XmlElement ;
         rdf:Property x2rm:hasChild ;
         rdf:Property x2rm:hasAttribute .
