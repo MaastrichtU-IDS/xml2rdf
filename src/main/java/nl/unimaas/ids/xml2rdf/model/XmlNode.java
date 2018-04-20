@@ -24,6 +24,7 @@ class XmlNode extends BaseNode {
 	private static final IRI HAS_VALUE = valueFactory.createIRI(X2RM, "hasValue");
 	private static final IRI HAS_XPATH = valueFactory.createIRI(X2RM, "hasXPath");
 	private static final IRI IS_CHILD_OF = valueFactory.createIRI(X2RM, "isChildOf");
+	private static final IRI IS_ATTRIBUTE_OF = valueFactory.createIRI(X2RM, "isAttributeOf");
 	
 	private static final IRI SUB_CLASS_OF = valueFactory.createIRI(RDFS, "subClassOf");
 	private static final IRI TYPE = valueFactory.createIRI(RDF, "type");
@@ -86,6 +87,7 @@ class XmlNode extends BaseNode {
 		for(XmlAttribute attribute : attributes.values()) {
 			if(attribute.isNew) {
 				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, SUB_CLASS_OF, XML_ATTRIBUTE));
+				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, IS_ATTRIBUTE_OF, class_iri));
 				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_NAME, valueFactory.createLiteral(name)));
 				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_XPATH, valueFactory.createLiteral(attribute.getRelativeXPath())));
 				attribute.isNew = false;
@@ -100,6 +102,7 @@ class XmlNode extends BaseNode {
 		for(XmlAttribute attribute : actualAttributes.values()) {
 			if(attribute.isNew) {
 				rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, TYPE , XML_ATTRIBUTE));
+				rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, IS_ATTRIBUTE_OF , iri));
 				rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, HAS_VALUE, valueFactory.createLiteral(value)));
 				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_XPATH, valueFactory.createLiteral(attribute.getAbsoluteXpath())));
 				attribute.isNew = false;
