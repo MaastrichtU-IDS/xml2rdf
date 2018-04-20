@@ -53,6 +53,7 @@ public class Xml2RdfConverter {
 				xmlNode.registerValue(xmlStreamReader.getText());
 			} else if (event==XMLStreamConstants.END_ELEMENT) {
 				xmlNode.toRdf(rdfWriter);
+				xmlNode.count = 0;
 				xmlNode = xmlNode.parent;
 			}
 		}

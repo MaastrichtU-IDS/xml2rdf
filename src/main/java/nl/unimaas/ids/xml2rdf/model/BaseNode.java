@@ -8,6 +8,8 @@ abstract class BaseNode {
 	
 	private static final DecimalFormat percentFormat = new DecimalFormat("#.#%");
 	
+	public boolean isNew = true;
+	
 	public XmlNode parent = null;
 	public String name = null;
 	public String value = null;

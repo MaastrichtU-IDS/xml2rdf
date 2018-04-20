@@ -1,8 +1,6 @@
 package nl.unimaas.ids.xml2rdf.model;
 
 class XmlAttribute extends BaseNode {
-	public boolean isNew = true;
-
 	@Override
 	String getType() {
 		return XmlAttribute.class.getSimpleName();
