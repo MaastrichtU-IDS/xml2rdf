@@ -47,7 +47,6 @@ insert data {
     x2rm:isAttributeOf owl:inverseOf x2rm:hasAttribute .
     
 }
-}
 ```
 # Docker
 ## Build
