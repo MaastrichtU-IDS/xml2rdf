@@ -19,15 +19,15 @@ insert data {
     x2rm:hasName a rdf:Property ;
         rdfs:domain x2rm:XmlElement;
         rdfs:type rdfs:Literal .
+    x2rm:hasValue a rdf:Property ;
+        rdfs:domain x2rm:XmlElement;
+        rdfs:type rdfs:Literal .
     x2rm:hasXPath a rdf:Property ;
         rdfs:domain x2rm:XmlElement;
         rdfs:type rdfs:Literal . 
-    
+        
     # XmlAttribue
     x2rm:XmlAttribute rdfs:subClassOf x2rm:XmlElement .
-    x2rm:hasValue a rdf:Property ;
-        rdfs:domain x2rm:XmlAttribute;
-        rdfs:type rdfs:Literal . 
     
     # XmlNode
     x2rm:XmlNode rdfs:subClassOf x2rm:XmlElement .
@@ -38,10 +38,7 @@ insert data {
     x2rm:hasAttribute a rdf:Property ;
         rdfs:domain x2rm:XmlNode ;
         rdfs:range x2rm:XmlAttribute .
-    x2rm:hasValue a rdf:Property ;
-        rdfs:domain x2rm:XmlNode;
-        rdfs:range rdfs:Literal .
-    
+        
     # Inverse attributes 
     x2rm:isNameOf owl:inverseOf x2rm:hasName .
     x2rm:isValueOf owl:inverseOf x2rm:hasValue.
