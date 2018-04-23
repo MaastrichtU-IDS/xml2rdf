@@ -39,7 +39,7 @@ insert data {
         rdfs:domain x2rm:XmlNode ;
         rdfs:range x2rm:XmlAttribute .
     
-    # Inverse properties 
+    # Inverse attributes 
     x2rm:isNameOf owl:inverseOf x2rm:hasName .
     x2rm:isValueOf owl:inverseOf x2rm:hasValue .
     x2rm:isXPathOf owl:inverseOf x2rm:hasXPath .
