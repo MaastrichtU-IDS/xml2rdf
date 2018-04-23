@@ -12,20 +12,41 @@ PREFIX owl:  <http://www.w3.org/2002/07/owl#>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
 insert data {
-    x2rm:XmlElement a rdfs:type ;
-        rdf:Property x2rm:hasName ;
-        rdf:Property x2rm:hasValue ;
-	rdf:Property x2rm:hasXPath .
-		
-    x2rm:XmlNode rdfs:subClassOf x2rm:XmlElement ;
-        rdf:Property x2rm:hasChild ;
-        rdf:Property x2rm:hasAttribute .
     
-    x2rm:XmlAttribute rdfs:subClassOf x2rm:XmlElement .
+    # Base XmlElement
+    x2rm:XmlElement a rdfs:type .
+    # Attributes
+    x2rm:hasName a rdf:Property ;
+        rdfs:domain x2rm:XmlElement;
+        rdfs:type rdfs:Literal . 
+    x2rm:hasValue a rdf:Property ;
+        rdfs:domain x2rm:XmlElement;
+        rdfs:type rdfs:Literal . 
+    x2rm:hasXPath a rdf:Property ;
+        rdfs:domain x2rm:XmlElement;
+        rdfs:type rdfs:Literal . 
     
+    # XmlAttribue
+	x2rm:XmlAttribute rdfs:subClassOf x2rm:XmlElement .
+    
+    # XmlNode
+    x2rm:XmlNode rdfs:subClassOf x2rm:XmlElement .
+    # Attributes
+    x2rm:hasChild a rdf:Property ;
+        rdfs:domain x2rm:XmlNode ;
+        rdfs:range x2rm:XmlNode .
+    x2rm:hasAttribute a rdf:Property ;
+        rdfs:domain x2rm:XmlNode ;
+        rdfs:range x2rm:XmlAttribute .
+    
+    # Inverse properties 
+    x2rm:isNameOf owl:inverseOf x2rm:hasName .
+    x2rm:isValueOf owl:inverseOf x2rm:hasValue .
+    x2rm:isXPathOf owl:inverseOf x2rm:hasXPath .
     x2rm:isChildOf owl:inverseOf x2rm:hasChild .
-    x2rm:isAttributeOf owl:inverseOf x2rm:hasAttribute .
-    x2rm:isXPathOf owl:inverseOf x2rm:hasXPath .
+    x2rm:isAttributeOf owl:inverseOf x2rm:hasAttribute .
+    
+}
 }
 ```
 # Docker
