@@ -53,7 +53,9 @@ public class Xml2RdfConverter {
 				xmlNode.registerValue(xmlStreamReader.getText());
 			} else if (event==XMLStreamConstants.END_ELEMENT) {
 				xmlNode.toRdf(rdfWriter);
-				xmlNode.childs.values().forEach(child -> child.index = 0);
+				// because it is already part of the child-map (for statistics)
+				// index will be incremented immediately when registered
+				xmlNode.childs.values().forEach(child -> child.index = -1);
 				xmlNode = xmlNode.parent;
 			}
 		}
