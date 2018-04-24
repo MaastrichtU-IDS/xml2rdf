@@ -66,18 +66,18 @@ public class Xml2RdfConverter {
 	}
 	
 	public Xml2RdfConverter structuredPrint() {
-		printStructure(rootNode, "" , "| ");
+		printStructureAndStats(rootNode, "" , "| ");
 		return this;
 	}
 	
-	private void printStructure(XmlNode node, String indent, String baseIndent) {
+	private void printStructureAndStats(XmlNode node, String indent, String baseIndent) {
 		System.out.println(indent + "# " + node.toString());
 		
 		for(XmlAttribute attribute : node.attributes.values())
 			System.out.println(indent + baseIndent + "* " + attribute.toString());
 		
 		for(XmlNode child : node.childs.values())
-			printStructure(child, indent + baseIndent, baseIndent);
+			printStructureAndStats(child, indent + baseIndent, baseIndent);
 	}
 
 }
