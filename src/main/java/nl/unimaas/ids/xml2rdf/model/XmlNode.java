@@ -36,6 +36,7 @@ class XmlNode extends BaseNode {
 		XmlNode child = null;
 		if(childs.containsKey(name)) {
 			child = childs.get(name);
+			child.index++;
 			child.count++;
 			child.value = null;
 			child.registerValue(value);
@@ -47,7 +48,7 @@ class XmlNode extends BaseNode {
 			child.class_iri = valueFactory.createIRI(X2RM, child.getRelativeXPath());
 			childs.put(name, child);
 		}
-		child.actualAttributes = new HashMap<>();
+		child.actualAttributes.clear();
 		child.iri = valueFactory.createIRI(X2RD, UUID.randomUUID().toString());
 		return child;
 	}
@@ -56,7 +57,7 @@ class XmlNode extends BaseNode {
 		XmlAttribute attribute = null;
 		if(attributes.containsKey(name)) {
 			attribute = attributes.get(name);
-			attribute.count++;
+			attribute.index++;
 			attribute.value = null;
 			attribute.registerValue(value);
 		} else {
@@ -125,7 +126,7 @@ class XmlNode extends BaseNode {
 	
 	@Override
 	String getAbsoluteXpath() {
-		return parent.getAbsoluteXpath() + "/" + name + "[" + count + "]";
+		return parent.getAbsoluteXpath() + "/" + name + "[" + index + "]";
 	}
 	
 	boolean isRoot() {

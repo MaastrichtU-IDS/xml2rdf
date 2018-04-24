@@ -14,6 +14,7 @@ abstract class BaseNode {
 	public String name = null;
 	public String value = null;
 	public long count = 1;
+	public long index = 0;
 	public long valueCount = 0;
 	public long minLength = -1;
 	public long maxLength = -1;
@@ -49,8 +50,8 @@ abstract class BaseNode {
 	public String toString() {
 		return getType() 
 				+ "{name: \"" + name + "\""
-				+ ", count: " + count + " " +  toPercent(count, parent!=null ? parent.count : 0) + ""
-				+ ", valueCount: " + valueCount + " " +  toPercent(valueCount, count)
+				+ ", count: " + count + " " +  toPercent(index, parent!=null ? parent.index : 0) + ""
+				+ ", valueCount: " + valueCount + " " +  toPercent(valueCount, index)
 				+ ", minLength: " + (minLength != -1 ? minLength : "N/A")
 				+ ", maxLength: " + (maxLength != -1 ? maxLength : "N/A")
 				+ ", xPath: \"" + getRelativeXPath() + "\""
