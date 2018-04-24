@@ -16,6 +16,9 @@ public class Xml2rdf {
 			if(args.length != 2)
 				throw new IllegalArgumentException("Expecting exactly 2 arguments.");
 			
+			if(!args[1].toLowerCase().endsWith(".xml") && !args[0].toLowerCase().endsWith(".xml.gz"))
+				throw new IllegalArgumentException("Input file-name has to end with \".xml\" or \".xml.gz\"");
+			
 			if(!args[1].toLowerCase().endsWith(".nt.gz"))
 				throw new IllegalArgumentException("Output file-name has to end with \".nt.gz\"");
 			

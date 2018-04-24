@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import javax.xml.stream.XMLInputFactory;
@@ -37,7 +39,10 @@ public class Xml2RdfConverter {
 		rdfWriter.startRDF();
 		
 		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-		XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(new FileInputStream(inputFile));
+		InputStream inputStream = new FileInputStream(inputFile);
+		if(inputFile.getName().toLowerCase().endsWith(".gz"))
+			inputStream = new GZIPInputStream(inputStream);
+		XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
 		
 		String name = null;
 		
@@ -55,7 +60,7 @@ public class Xml2RdfConverter {
 				xmlNode.toRdf(rdfWriter);
 				// because it is already part of the child-map (for statistics)
 				// index will be incremented immediately when registered
-				xmlNode.childs.values().forEach(child -> child.index = -1);
+				xmlNode.childs.values().forEach(child -> {child.index = -1; child.value = null;});
 				xmlNode = xmlNode.parent;
 			}
 		}
