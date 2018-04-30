@@ -112,11 +112,13 @@ class XmlNode extends BaseNode {
 		rdfWriter.handleStatement(valueFactory.createStatement(iri, HAS_XPATH, valueFactory.createLiteral(getAbsoluteXpath())));
 		
 		for(XmlAttribute attribute : actualAttributes.values()) {
-			rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, TYPE , XML_ATTRIBUTE));
-			rdfWriter.handleStatement(valueFactory.createStatement(iri, HAS_ATTRIBUTE, attribute.iri));
-			rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, HAS_VALUE, valueFactory.createLiteral(value)));
-			rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_XPATH, valueFactory.createLiteral(attribute.getAbsoluteXpath())));
-			attribute.isNew = false;
+			if(attribute.value != null && !attribute.value.isEmpty()) {
+				rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, TYPE , XML_ATTRIBUTE));
+				rdfWriter.handleStatement(valueFactory.createStatement(iri, HAS_ATTRIBUTE, attribute.iri));
+				rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, HAS_VALUE, valueFactory.createLiteral(value)));
+				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_XPATH, valueFactory.createLiteral(attribute.getAbsoluteXpath())));
+				attribute.isNew = false;
+			}
 		}
 	}
 	
