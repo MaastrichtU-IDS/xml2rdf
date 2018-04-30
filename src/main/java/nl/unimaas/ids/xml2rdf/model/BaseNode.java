@@ -38,7 +38,7 @@ abstract class BaseNode {
 				maxLength = length > maxLength ? length : maxLength;
 			}
 		} else 
-			value = value;
+			this.value = value;
 	}
 	
 	abstract String getType();
@@ -51,8 +51,8 @@ abstract class BaseNode {
 	public String toString() {
 		return getType() 
 				+ "{name: \"" + name + "\""
-				+ ", count: " + count + " " +  toPercent(index, parent!=null ? parent.index : 0) + ""
-				+ ", valueCount: " + valueCount + " " +  toPercent(valueCount, index)
+				+ ", count: " + count + " " +  toPercent(count, parent!=null ? parent.count : 0) + ""
+				+ ", valueCount: " + valueCount + " " +  toPercent(valueCount, count)
 				+ ", minLength: " + (minLength != -1 ? minLength : "N/A")
 				+ ", maxLength: " + (maxLength != -1 ? maxLength : "N/A")
 				+ ", xPath: \"" + getRelativeXPath() + "\""
