@@ -15,6 +15,7 @@ class XmlNode extends BaseNode {
 	private static final String X2RD = "http://ids.unimaas.nl/rdf2xml/data/";
 	private static final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
 	private static final String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+	private static final String OWL = "http://www.w3.org/2002/07/owl#";
 	
 	private static final IRI XML_ELEMENT = valueFactory.createIRI(X2RM, "XmlNode");
 	private static final IRI XML_ATTRIBUTE = valueFactory.createIRI(X2RM, "XmlAttribute");
@@ -27,6 +28,7 @@ class XmlNode extends BaseNode {
 	
 	private static final IRI SUB_CLASS_OF = valueFactory.createIRI(RDFS, "subClassOf");
 	private static final IRI TYPE = valueFactory.createIRI(RDF, "type");
+	private static final IRI INVERSE_OF = valueFactory.createIRI(OWL, "inverseOf");
 	
 	public Map<String, XmlNode> childs = new HashMap<>();
 	public Map<String, XmlAttribute> attributes = new HashMap<>();
@@ -81,6 +83,12 @@ class XmlNode extends BaseNode {
 			rdfWriter.handleStatement(valueFactory.createStatement(class_iri, HAS_XPATH, valueFactory.createLiteral(getRelativeXPath())));
 			if(!parent.isRoot()) {
 				rdfWriter.handleStatement(valueFactory.createStatement(parent.class_iri, HAS_CHILD, class_iri));
+				
+				String capitalizedName = name.substring(0,1) + name.substring(1);
+				IRI shortcut = valueFactory.createIRI(X2RM, "has" + capitalizedName);
+				IRI shortcutInverse = valueFactory.createIRI(X2RM, "is" + capitalizedName + "Of");
+				rdfWriter.handleStatement(valueFactory.createStatement(shortcutInverse, INVERSE_OF, shortcut));
+				rdfWriter.handleStatement(valueFactory.createStatement(parent.class_iri, valueFactory.createIRI(X2RM + "has" + name.substring(0,1).toUpperCase() + name.substring(1)) , class_iri));
 			}
 			isNew = false;
 		}
