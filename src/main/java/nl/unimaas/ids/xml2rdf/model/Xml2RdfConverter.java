@@ -51,6 +51,7 @@ public class Xml2RdfConverter {
 			if(event==XMLStreamConstants.START_ELEMENT) {
 				name = xmlStreamReader.getLocalName();
 				xmlNode = xmlNode.registerChild(name, null);
+				xmlNode.value = null;
 				for(int i=0; i<xmlStreamReader.getAttributeCount(); i++) {
 					xmlNode.registerAttribute(xmlStreamReader.getAttributeLocalName(i), xmlStreamReader.getAttributeValue(i));
 				}
@@ -61,6 +62,7 @@ public class Xml2RdfConverter {
 				// because it is already part of the child-map (for statistics)
 				// index will be incremented immediately when registered
 				xmlNode.childs.values().forEach(child -> {child.index = -1; child.value = null;});
+				xmlNode.attributes.values().forEach(attribute -> {attribute.index = -1; attribute.value = null;});
 				xmlNode = xmlNode.parent;
 			}
 		}

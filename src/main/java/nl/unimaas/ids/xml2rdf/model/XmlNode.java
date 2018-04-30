@@ -38,6 +38,7 @@ class XmlNode extends BaseNode {
 			child = childs.get(name);
 			child.index++;
 			child.count++;
+			child.value = null;
 		} else {
 			child = new XmlNode();
 			child.parent = this;
@@ -56,8 +57,8 @@ class XmlNode extends BaseNode {
 		if(attributes.containsKey(name)) {
 			attribute = attributes.get(name);
 			attribute.index++;
+			attribute.count++;
 			attribute.value = null;
-			attribute.registerValue(value, false);
 		} else {
 			attribute = new XmlAttribute();
 			attribute.parent = this;
@@ -66,6 +67,7 @@ class XmlNode extends BaseNode {
 			attribute.class_iri = valueFactory.createIRI(X2RM, attribute.getRelativeXPath());
 			attributes.put(name, attribute);
 		}
+		attribute.registerValue(value, false);
 		attribute.iri = valueFactory.createIRI(X2RD, UUID.randomUUID().toString());
 		actualAttributes.put(name, attribute);
 		return attribute;
