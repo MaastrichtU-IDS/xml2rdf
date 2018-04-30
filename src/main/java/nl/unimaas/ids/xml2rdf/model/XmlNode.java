@@ -63,7 +63,6 @@ class XmlNode extends BaseNode {
 			attribute = new XmlAttribute();
 			attribute.parent = this;
 			attribute.name = name;
-			attribute.registerValue(value, false);
 			attribute.class_iri = valueFactory.createIRI(X2RM, attribute.getRelativeXPath().substring(1));
 			attributes.put(name, attribute);
 		}
