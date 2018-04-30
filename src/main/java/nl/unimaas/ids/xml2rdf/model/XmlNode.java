@@ -11,7 +11,7 @@ import org.eclipse.rdf4j.rio.RDFWriter;
 
 class XmlNode extends BaseNode {
 	private static final ValueFactory valueFactory = SimpleValueFactory.getInstance();
-	private static final String X2RM = "http://ids.unimaas.nl/rdf2xml/model#";
+	private static final String X2RM = "http://ids.unimaas.nl/rdf2xml/model/";
 	private static final String X2RD = "http://ids.unimaas.nl/rdf2xml/data/";
 	private static final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
 	private static final String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
@@ -38,11 +38,12 @@ class XmlNode extends BaseNode {
 			child = childs.get(name);
 			child.index++;
 			child.count++;
+			child.value = null;
 		} else {
 			child = new XmlNode();
 			child.parent = this;
 			child.name = name;			
-			child.class_iri = valueFactory.createIRI(X2RM, child.getPathId());
+			child.class_iri = valueFactory.createIRI(X2RM, child.getRelativeXPath().substring(1));
 			childs.put(name, child);
 		}
 		child.registerValue(value, false);
@@ -56,8 +57,8 @@ class XmlNode extends BaseNode {
 		if(attributes.containsKey(name)) {
 			attribute = attributes.get(name);
 			attribute.index++;
+			attribute.count++;
 			attribute.value = null;
-			attribute.registerValue(value, false);
 		} else {
 			attribute = new XmlAttribute();
 			attribute.parent = this;
@@ -66,6 +67,7 @@ class XmlNode extends BaseNode {
 			attribute.class_iri = valueFactory.createIRI(X2RM, attribute.getRelativeXPath());
 			attributes.put(name, attribute);
 		}
+		attribute.registerValue(value, false);
 		attribute.iri = valueFactory.createIRI(X2RD, UUID.randomUUID().toString());
 		actualAttributes.put(name, attribute);
 		return attribute;
