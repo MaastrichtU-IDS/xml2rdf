@@ -16,6 +16,4 @@ RUN mvn clean install && \
     
 WORKDIR $APP_DIR
 
-EXPOSE 80
-
 ENTRYPOINT ["java","-jar","xml2rdf.jar"]
