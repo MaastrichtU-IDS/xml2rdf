@@ -129,7 +129,7 @@ class XmlNode extends BaseNode {
 	
 	@Override
 	String getAbsoluteXpath() {
-		return parent.getAbsoluteXpath() + "/" + name + "[" + index + "]";
+		return parent.getAbsoluteXpath() + "/" + name + "[" + (index + 1) + "]";
 	}
 	
 	boolean isRoot() {
