@@ -88,7 +88,7 @@ class XmlNode extends BaseNode {
 				IRI shortcut = valueFactory.createIRI(X2RM, "has" + capitalizedName);
 				IRI shortcutInverse = valueFactory.createIRI(X2RM, "is" + capitalizedName + "Of");
 				rdfWriter.handleStatement(valueFactory.createStatement(shortcutInverse, INVERSE_OF, shortcut));
-				rdfWriter.handleStatement(valueFactory.createStatement(parent.class_iri, valueFactory.createIRI(X2RM + "has" + name.substring(0,1).toUpperCase() + name.substring(1)) , class_iri));
+				rdfWriter.handleStatement(valueFactory.createStatement(parent.class_iri, shortcut , class_iri));
 			}
 			isNew = false;
 		}
@@ -99,6 +99,13 @@ class XmlNode extends BaseNode {
 				rdfWriter.handleStatement(valueFactory.createStatement(class_iri, HAS_ATTRIBUTE, attribute.class_iri));
 				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_NAME, valueFactory.createLiteral(name)));
 				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_XPATH, valueFactory.createLiteral(attribute.getRelativeXPath())));
+				
+				String capitalizedNaem = attribute.name.substring(0,1) + attribute.name.substring(1);
+				IRI shortcut = valueFactory.createIRI(X2RM, "hasAttr" + capitalizedNaem);
+				IRI shortcutInverse = valueFactory.createIRI(X2RM, "isAttr" + capitalizedNaem + "Of");
+				rdfWriter.handleStatement(valueFactory.createStatement(shortcutInverse, INVERSE_OF, shortcut));
+				rdfWriter.handleStatement(valueFactory.createStatement(class_iri, shortcut, attribute.class_iri));
+				
 				attribute.isNew = false;
 			}
 		}
@@ -113,7 +120,7 @@ class XmlNode extends BaseNode {
 		
 		for(XmlAttribute attribute : actualAttributes.values()) {
 			if(attribute.value != null && !attribute.value.isEmpty()) {
-				rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, TYPE , XML_ATTRIBUTE));
+				rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, TYPE , attribute.class_iri));
 				rdfWriter.handleStatement(valueFactory.createStatement(iri, HAS_ATTRIBUTE, attribute.iri));
 				rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, HAS_VALUE, valueFactory.createLiteral(value)));
 				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_XPATH, valueFactory.createLiteral(attribute.getAbsoluteXpath())));
