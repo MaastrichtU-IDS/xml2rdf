@@ -55,7 +55,7 @@ public class Xml2RdfConverter {
 					xmlNode.registerAttribute(xmlStreamReader.getAttributeLocalName(i), xmlStreamReader.getAttributeValue(i));
 				}
 			} else if (event == XMLStreamConstants.CHARACTERS) {
-				xmlNode.registerValue(xmlStreamReader.getText());
+				xmlNode.registerValue(xmlStreamReader.getText(), true);
 			} else if (event==XMLStreamConstants.END_ELEMENT) {
 				xmlNode.toRdf(rdfWriter);
 				// because it is already part of the child-map (for statistics)

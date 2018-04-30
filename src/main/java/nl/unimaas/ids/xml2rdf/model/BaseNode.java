@@ -22,8 +22,8 @@ abstract class BaseNode {
 	public IRI class_iri = null;
 	public IRI iri = null;
 	
-	public void registerValue(String value) {
-		if(value!=null) {
+	public void registerValue(String value, boolean append) {
+		if(append && value!=null) {
 			String val = value.trim();
 			long length = val.trim().length();
 			if(length > 0) {
@@ -37,7 +37,8 @@ abstract class BaseNode {
 				minLength = minLength == -1 || length < minLength ? length : minLength;
 				maxLength = length > maxLength ? length : maxLength;
 			}
-		}
+		} else 
+			value = value;
 	}
 	
 	abstract String getType();

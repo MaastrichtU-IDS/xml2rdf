@@ -24,13 +24,13 @@ public class Xml2rdf {
 			
 			File inputFile = new File(args[0]);
 			if(!inputFile.exists())
-				throw new IllegalArgumentException("Input-File does not exist");
+				throw new IllegalArgumentException("Unable to find the input-file in the specified location \"" + inputFile.getAbsolutePath() + "\"");
 			
 			File outputFile = new File(args[1]);
 			if(outputFile.exists())
 				System.out.println("WARNING: Outputfile already exists and will be overwritten");
 			
-			if(!outputFile.getParentFile().canWrite())
+			if(!new File(outputFile.getAbsolutePath()).getParentFile().canWrite())
 				throw new IllegalArgumentException("Can not write to directory of output file.");
 			
 			new Xml2RdfConverter(inputFile, outputFile)

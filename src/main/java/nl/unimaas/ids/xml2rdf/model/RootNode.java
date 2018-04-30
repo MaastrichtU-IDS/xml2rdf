@@ -17,6 +17,11 @@ class RootNode extends XmlNode {
 	}
 	
 	@Override
+	String getPathId() {
+		return "";
+	}
+	
+	@Override
 	String getAbsoluteXpath() {
 		return "";
 	}
