@@ -2,7 +2,7 @@
 
 
 # About
-This tool converts xml files into a generic rdf model.
+This tool converts any xml file into a generic rdf model.
 ## RDF model
 ```
 PREFIX x2rm: <http://ids.unimaas.nl/rdf2xml/model#>
