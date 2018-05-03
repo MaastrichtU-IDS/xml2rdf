@@ -6,9 +6,9 @@ pipeline {
         git 'https://github.com/amalic/xml2rdf.git'
       }
     }
-    stage('') {
+    stage('error') {
       steps {
-        sh 'docker build -t rdf-upload:latest .'
+        sh 'docker build -t --no-cache rdf-upload:latest .'
       }
     }
   }
