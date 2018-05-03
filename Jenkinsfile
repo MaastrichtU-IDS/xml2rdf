@@ -8,7 +8,7 @@ pipeline {
     }
     stage('error') {
       steps {
-        sh 'docker build -t --no-cache rdf-upload:latest .'
+        sh 'docker build --no-cache -t rdf-upload:latest .'
       }
     }
   }
