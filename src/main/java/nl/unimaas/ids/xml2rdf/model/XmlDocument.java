@@ -1,8 +1,8 @@
 package nl.unimaas.ids.xml2rdf.model;
 
-class RootNode extends XmlNode {
+class XmlDocument extends XmlNode {
 	
-	public RootNode() {
+	public XmlDocument() {
 		name = "XML Document";
 	}
 	
