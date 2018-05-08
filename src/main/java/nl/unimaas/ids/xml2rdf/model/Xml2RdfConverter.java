@@ -21,8 +21,6 @@ import org.eclipse.rdf4j.rio.RDFWriter;
 import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.rio.UnsupportedRDFormatException;
 
-import com.ctc.wstx.exc.WstxParsingException;
-
 public class Xml2RdfConverter {
 	static final ValueFactory valueFactory = SimpleValueFactory.getInstance();
 	public static final String X2RM = "http://ids.unimaas.nl/rdf2xml/model/";
@@ -68,15 +66,9 @@ public class Xml2RdfConverter {
 		XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
 		
 		String name = null;
-		int event = 0;
 		
 		while(xmlStreamReader.hasNext()) {
-			try {
-				event = xmlStreamReader.next();
-			} catch (WstxParsingException e) {
-				if(e.getMessage().startsWith("Unexpected close tag"))
-					event = XMLStreamConstants.END_ELEMENT;
-			}
+			int event = xmlStreamReader.next();
 			if(event==XMLStreamConstants.START_ELEMENT) {
 				name = xmlStreamReader.getLocalName();
 				xmlNode = xmlNode.registerChild(name, null);
@@ -87,15 +79,12 @@ public class Xml2RdfConverter {
 			} else if (event == XMLStreamConstants.CHARACTERS) {
 				xmlNode.registerValue(xmlStreamReader.getText(), true);
 			} else if (event==XMLStreamConstants.END_ELEMENT) {
-				// for messy html when tags are not closed properly
-				boolean found = false;
-				while(!found) {
-					found = xmlNode.name.equals(xmlStreamReader.getLocalName());
-					toRdf(xmlNode, rdfWriter);
-					xmlNode.childs.values().forEach(child -> {child.index = -1; child.value = null;});
-					xmlNode.attributes.values().forEach(attribute -> {attribute.index = -1; attribute.value = null;});
-					xmlNode = xmlNode.parent;
-				}
+				toRdf(xmlNode, rdfWriter);
+				// because it is already part of the child-map (for statistics)
+				// index will be incremented immediately when registered
+				xmlNode.childs.values().forEach(child -> {child.index = -1; child.value = null;});
+				xmlNode.attributes.values().forEach(attribute -> {attribute.index = -1; attribute.value = null;});
+				xmlNode = xmlNode.parent;
 			}
 		}
 		
