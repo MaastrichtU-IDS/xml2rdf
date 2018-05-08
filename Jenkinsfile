@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('checkout') {
       steps {
-        git 'https://github.com/amalic/xml2rdf.git'
+        git 'https://github.com/MaastrichtU-IDS/xml2rdf.git'
       }
     }
     stage('build') {
