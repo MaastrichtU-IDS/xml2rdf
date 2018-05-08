@@ -79,12 +79,15 @@ public class Xml2RdfConverter {
 			} else if (event == XMLStreamConstants.CHARACTERS) {
 				xmlNode.registerValue(xmlStreamReader.getText(), true);
 			} else if (event==XMLStreamConstants.END_ELEMENT) {
-				toRdf(xmlNode, rdfWriter);
-				// because it is already part of the child-map (for statistics)
-				// index will be incremented immediately when registered
-				xmlNode.childs.values().forEach(child -> {child.index = -1; child.value = null;});
-				xmlNode.attributes.values().forEach(attribute -> {attribute.index = -1; attribute.value = null;});
-				xmlNode = xmlNode.parent;
+				// for messy html when tags are not closed properly
+				boolean found = false;
+				while(!found) {
+					found = xmlNode.name.equals(xmlStreamReader.getLocalName());
+					toRdf(xmlNode, rdfWriter);
+					xmlNode.childs.values().forEach(child -> {child.index = -1; child.value = null;});
+					xmlNode.attributes.values().forEach(attribute -> {attribute.index = -1; attribute.value = null;});
+					xmlNode = xmlNode.parent;
+				}
 			}
 		}
 		
