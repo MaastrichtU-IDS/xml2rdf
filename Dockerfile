@@ -1,6 +1,6 @@
 FROM maven:3-jdk-8
 
-LABEL maintainer "Alexander Malic <alexander.malic@maastrichtuniversity.nl>"
+LABEL maintainer  "Alexander Malic <alexander.malic@maastrichtuniversity.nl>"
 
 ENV APP_DIR /app
 ENV TMP_DIR /tmp/dqa
