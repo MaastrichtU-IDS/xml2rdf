@@ -53,6 +53,10 @@ insert data {
 ```
 docker build -t xml2rdf .
 ```
+## Usage
+```
+docker un --rm -it xml2rdf -?
+```
 ## Run
 
 ### Linux / OSX
