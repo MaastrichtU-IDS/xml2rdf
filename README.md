@@ -4,7 +4,7 @@
 # About
 This tool converts any xml file into a generic rdf model.
 ## RDF model
-```
+```shell
 PREFIX x2rm: <http://ids.unimaas.nl/rdf2xml/model#>
 PREFIX x2rd: <http://ids.unimaas.nl/rdf2xml/data/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -12,7 +12,6 @@ PREFIX owl:  <http://www.w3.org/2002/07/owl#>
 PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
 insert data {
-    
     # Base XmlElement
     x2rm:XmlElement a rdfs:type .
     # Attributes
@@ -45,25 +44,24 @@ insert data {
     x2rm:isXPathOf owl:inverseOf x2rm:hasXPath .
     x2rm:isChildOf owl:inverseOf x2rm:hasChild .
     x2rm:isAttributeOf owl:inverseOf x2rm:hasAttribute .
-    
 }
 ```
 # Docker
 ## Build
-```
+```shell
 docker build -t xml2rdf .
 ```
 ## Usage
-```
-docker un --rm -it xml2rdf -?
+```shell
+docker run --rm -it xml2rdf -?
 ```
 ## Run
 
 ### Linux / OSX
-```
-docker run --rm -it -v /data/xml2rdfdata/:/data/ xml2rdf "/data/input.xml" "/data/output.nt.gz"
+```shell
+docker run --rm -it -v /data/xml2rdfdata:/data xml2rdf  -i "/data/input.xml.gz" -o "/data/output.nq.gz" -g "http://kraken/xml2rdf/graph"
 ```
 ### Windows
-```
-docker run --rm -it -v c:/data/xml2rdfdata/:/data/ xml2rdf "/data/input.xml" "/data/output.nt.gz"
+```shell
+docker run --rm -it -v c:/data/xml2rdfdata:/data xml2rdf  -i "/data/input.xml.gz" -o "/data/output.nq.gz" -g "http://kraken/xml2rdf/graph"
 ```
