@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.rdf4j.rio.UnsupportedRDFormatException;
 
 import nl.unimaas.ids.xml2rdf.model.Xml2RdfConverter;
@@ -14,6 +16,8 @@ import picocli.CommandLine.MissingParameterException;
 public class Xml2rdf {
 	
 	public static void main(String[] args) {
+		final Log log = LogFactory.getLog(Xml2rdf.class.getName());
+		
 		try {
 			CliOptions cli = CommandLine.populateCommand(new CliOptions(), args);
 			if(cli.help) 
@@ -31,7 +35,7 @@ public class Xml2rdf {
 			
 			File outputFile = new File(cli.outputFilePath);
 			if(outputFile.exists())
-				System.out.println("WARNING: Outputfile already exists and will be overwritten");
+				log.warn("Outputfile already exists and will be overwritten");
 			
 			if(!new File(outputFile.getAbsolutePath()).getParentFile().canWrite())
 				throw new IllegalArgumentException("Can not write to directory of output file.");
@@ -39,8 +43,10 @@ public class Xml2rdf {
 			new Xml2RdfConverter(inputFile, outputFile, cli.graphUri)
 				.doWork()
 				.structuredPrint();
-		} catch (MissingParameterException | IllegalArgumentException | XMLStreamException | UnsupportedRDFormatException | IOException e) {
+		} catch (MissingParameterException | IllegalArgumentException e) {
 			printUsageAndExit(e);
+		} catch (XMLStreamException | UnsupportedRDFormatException | IOException e) {
+			e.printStackTrace();
 		}
 		
 	}
@@ -50,7 +56,7 @@ public class Xml2rdf {
 	}
 	
 	private static void printUsageAndExit(Throwable e) {
-		CommandLine.usage(new CliOptions(), System.out);
+		CommandLine.usage(new CliOptions(), System.err);
 		if(e == null)
 			System.exit(0);
 		e.printStackTrace();

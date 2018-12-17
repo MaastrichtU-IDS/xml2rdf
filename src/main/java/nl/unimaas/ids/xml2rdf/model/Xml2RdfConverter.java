@@ -24,7 +24,7 @@ import org.eclipse.rdf4j.rio.UnsupportedRDFormatException;
 
 public class Xml2RdfConverter {
 	static final ValueFactory valueFactory = SimpleValueFactory.getInstance();
-	public static final String X2RM = "http://ids.unimaas.nl/rdf2xml/model/";
+	public static final String X2RM = "http://ids.unimaas.nl/rdf2xml/model#";
 	public static final String X2RD = "http://ids.unimaas.nl/rdf2xml/data/";
 	public static final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
 	public static final String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
@@ -111,16 +111,13 @@ public class Xml2RdfConverter {
 			}
 			node.isNew = false;
 		}
-		// let's check for new attributes
-		for(XmlAttribute attribute : node.attributes.values()) {
-			if(attribute.isNew) {
-				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, SUB_CLASS_OF, XML_ATTRIBUTE, graphIRI));
-				rdfWriter.handleStatement(valueFactory.createStatement(node.class_iri, HAS_ATTRIBUTE, attribute.class_iri, graphIRI));
-				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_NAME, valueFactory.createLiteral(attribute.name), graphIRI));
-				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_XPATH, valueFactory.createLiteral(attribute.getRelativeXPath()), graphIRI));
-				attribute.isNew = false;
-			}
-		}
+		node.attributes.values().stream().filter(v -> v.isNew).forEach(attribute -> {
+			rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, SUB_CLASS_OF, XML_ATTRIBUTE, graphIRI));
+			rdfWriter.handleStatement(valueFactory.createStatement(node.class_iri, HAS_ATTRIBUTE, attribute.class_iri, graphIRI));
+			rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_NAME, valueFactory.createLiteral(attribute.name), graphIRI));
+			rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_XPATH, valueFactory.createLiteral(attribute.getRelativeXPath()), graphIRI));
+			attribute.isNew = false;
+		});
 		
 		// now the data
 		rdfWriter.handleStatement(valueFactory.createStatement(node.iri, TYPE, node.class_iri, graphIRI));
@@ -137,7 +134,6 @@ public class Xml2RdfConverter {
 			if(attribute.value != null && !attribute.value.isEmpty()) {
 				rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, HAS_VALUE, valueFactory.createLiteral(attribute.value), graphIRI));
 			}
-			attribute.isNew = false;
 		}
 	}
 	

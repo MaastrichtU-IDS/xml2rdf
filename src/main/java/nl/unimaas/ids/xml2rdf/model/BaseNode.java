@@ -66,5 +66,7 @@ abstract class BaseNode {
 		else
 			return "";
 	}
+
+	abstract String getPathString();
 	
 }
