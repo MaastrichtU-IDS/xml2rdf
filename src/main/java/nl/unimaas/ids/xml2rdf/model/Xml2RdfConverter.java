@@ -24,8 +24,8 @@ import org.eclipse.rdf4j.rio.UnsupportedRDFormatException;
 
 public class Xml2RdfConverter {
 	static final ValueFactory valueFactory = SimpleValueFactory.getInstance();
-	public static final String X2RM = "http://ids.unimaas.nl/rdf2xml/model#";
-	public static final String X2RD = "http://ids.unimaas.nl/rdf2xml/data/";
+	public static final String X2RM = "http://ids.unimaas.nl/xml2rdf/model#";
+	public static final String X2RD = "http://ids.unimaas.nl/xml2rdf/data/";
 	public static final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
 	public static final String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	
