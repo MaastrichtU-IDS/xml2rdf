@@ -17,5 +17,8 @@ public class CliOptions {
 	
 	@Option(names = {"-g", "--graphuri"}, description = "Graph URI", required = true )
 	String graphUri = null;
+	
+	@Option(names = {"-xp", "--xpath"}, description = "Generate XPath paths in output")
+	boolean xpath = false;
 
 }

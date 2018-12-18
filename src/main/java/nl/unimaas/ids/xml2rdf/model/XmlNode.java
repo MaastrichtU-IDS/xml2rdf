@@ -25,7 +25,7 @@ class XmlNode extends BaseNode {
 			child = new XmlNode();
 			child.parent = this;
 			child.name = name;			
-			child.class_iri = valueFactory.createIRI(Xml2RdfConverter.X2RM, child.getRelativeXPath().substring(1));
+			child.class_iri = valueFactory.createIRI(Xml2RdfConverter.X2RM, child.getPathString().substring(1));
 			childs.put(name, child);
 		}
 		child.registerValue(value, false);
@@ -45,7 +45,7 @@ class XmlNode extends BaseNode {
 			attribute = new XmlAttribute();
 			attribute.parent = this;
 			attribute.name = name;
-			attribute.class_iri = valueFactory.createIRI(Xml2RdfConverter.X2RM, attribute.getRelativeXPath().substring(1));
+			attribute.class_iri = valueFactory.createIRI(Xml2RdfConverter.X2RM, attribute.getPathString().substring(1));
 			attributes.put(name, attribute);
 		}
 		attribute.registerValue(value, false);
@@ -60,14 +60,15 @@ class XmlNode extends BaseNode {
 	String getType() {
 		return XmlNode.class.getSimpleName();
 	}
+	
+	@Override
+	String getPathString() {
+		return parent.getPathString() + "." + name;
+	}
 
 	@Override
 	String getRelativeXPath() {
 		return parent.getRelativeXPath() + "/" + name;
-	}
-	
-	String getPathId() {
-		return parent.getPathId() + "." + name;
 	}
 	
 	@Override

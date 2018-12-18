@@ -16,4 +16,9 @@ class XmlAttribute extends BaseNode {
 		return parent.getAbsoluteXpath() + "/@" + name;
 	}
 
+	@Override
+	String getPathString() {
+		return parent.getPathString() + ".-" + name;
+	}
+
 }

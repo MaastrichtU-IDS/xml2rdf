@@ -17,12 +17,12 @@ class XmlDocument extends XmlNode {
 	}
 	
 	@Override
-	String getPathId() {
+	String getAbsoluteXpath() {
 		return "";
 	}
 	
 	@Override
-	String getAbsoluteXpath() {
+	String getPathString() {
 		return "";
 	}
 	
