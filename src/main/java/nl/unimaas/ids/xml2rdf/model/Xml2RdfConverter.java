@@ -21,7 +21,6 @@ import org.eclipse.rdf4j.rio.RDFFormat;
 import org.eclipse.rdf4j.rio.RDFWriter;
 import org.eclipse.rdf4j.rio.Rio;
 import org.eclipse.rdf4j.rio.UnsupportedRDFormatException;
-import org.springframework.context.support.GenericApplicationContextExtensionsKt;
 
 public class Xml2RdfConverter {
 	static final ValueFactory valueFactory = SimpleValueFactory.getInstance();
