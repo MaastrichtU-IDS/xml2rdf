@@ -1,13 +1,8 @@
 package nl.unimaas.ids.xml2rdf.model;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -25,7 +20,6 @@ import org.eclipse.rdf4j.rio.UnsupportedRDFormatException;
 public class Xml2RdfConverter {
 	static final ValueFactory valueFactory = SimpleValueFactory.getInstance();
 	public static final String X2RM = "http://ids.unimaas.nl/xml2rdf/model#";
-	public static final String X2RD = "http://ids.unimaas.nl/xml2rdf/data/";
 	public static final String RDFS = "http://www.w3.org/2000/01/rdf-schema#";
 	public static final String RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	
@@ -43,16 +37,18 @@ public class Xml2RdfConverter {
 	
 	
 	private XmlDocument xmlDocument = null;
+	private String namespace = null;
 	private XmlNode xmlNode = null;
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
 	private IRI graphIRI = null;
 	private boolean generateXpath = false;
 	
-	public Xml2RdfConverter(InputStream inputStream, OutputStream outputStream, String graphUri, boolean generateXpath) {
+	public Xml2RdfConverter(InputStream inputStream, OutputStream outputStream, String graphUri, String namespace, boolean generateXpath) {
 		this.inputStream = inputStream;
 		this.outputStream = outputStream;
 		this.generateXpath = generateXpath;
+		this.namespace = namespace;
 		graphIRI = valueFactory.createIRI(graphUri);
 		
 		xmlDocument = new XmlDocument();
@@ -72,10 +68,10 @@ public class Xml2RdfConverter {
 			int event = xmlStreamReader.next();
 			if(event==XMLStreamConstants.START_ELEMENT) {
 				name = xmlStreamReader.getLocalName();
-				xmlNode = xmlNode.registerChild(name, null);
+				xmlNode = xmlNode.registerChild(name, null, namespace);
 				xmlNode.value = null;
 				for(int i=0; i<xmlStreamReader.getAttributeCount(); i++) {
-					xmlNode.registerAttribute(xmlStreamReader.getAttributeLocalName(i), xmlStreamReader.getAttributeValue(i));
+					xmlNode.registerAttribute(xmlStreamReader.getAttributeLocalName(i), xmlStreamReader.getAttributeValue(i), namespace);
 				}
 			} else if (event == XMLStreamConstants.CHARACTERS) {
 				xmlNode.registerValue(xmlStreamReader.getText(), true);
