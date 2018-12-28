@@ -1,19 +1,16 @@
-FROM maven:3-jdk-8
+FROM maven:3-jdk-8 as maven
+
+COPY ./pom.xml ./pom.xml
+RUN mvn dependency:go-offline -B
+
+COPY ./src ./src
+RUN mvn package
+
+# our final base image
+FROM openjdk:8-jre-alpine
 
 LABEL maintainer  "Alexander Malic <alexander.malic@maastrichtuniversity.nl>"
 
-ENV APP_DIR /app
-ENV TMP_DIR /tmp/dqa
+COPY --from=maven target/xml2rdf-1.0.0-jar-with-dependencies.jar /app/xml2rdf.jar
 
-WORKDIR $TMP_DIR
-
-COPY . .
-
-RUN mvn clean install && \
-    mkdir $APP_DIR && \
-    mv target/xml2rdf-1.0.0-jar-with-dependencies.jar $APP_DIR/xml2rdf.jar && \
-    rm -rf $TMP_DIR
-    
-WORKDIR $APP_DIR
-
-ENTRYPOINT ["java","-jar","xml2rdf.jar"]
+ENTRYPOINT ["java","-jar","/app/xml2rdf.jar"]
