@@ -14,7 +14,7 @@ class XmlNode extends BaseNode {
 	public Map<String, XmlAttribute> attributes = new HashMap<>();
 	public Map<String, XmlAttribute> actualAttributes = new HashMap<>();
 	
-	public XmlNode registerChild(final String name, final String value) {
+	public XmlNode registerChild(final String name, final String value, String namespace) {
 		XmlNode child = null;
 		if(childs.containsKey(name)) {
 			child = childs.get(name);
@@ -30,11 +30,11 @@ class XmlNode extends BaseNode {
 		}
 		child.registerValue(value, false);
 		child.actualAttributes.clear();
-		child.iri = valueFactory.createIRI(Xml2RdfConverter.X2RD, UUID.randomUUID().toString());
+		child.iri = valueFactory.createIRI(namespace, UUID.randomUUID().toString());
 		return child;
 	}
 	
-	public XmlAttribute registerAttribute(final String name, final String value) {
+	public XmlAttribute registerAttribute(final String name, final String value, String namespace) {
 		XmlAttribute attribute = null;
 		if(attributes.containsKey(name)) {
 			attribute = attributes.get(name);
@@ -49,7 +49,7 @@ class XmlNode extends BaseNode {
 			attributes.put(name, attribute);
 		}
 		attribute.registerValue(value, false);
-		attribute.iri = valueFactory.createIRI(Xml2RdfConverter.X2RD, UUID.randomUUID().toString());
+		attribute.iri = valueFactory.createIRI(namespace, UUID.randomUUID().toString());
 		actualAttributes.put(name, attribute);
 		return attribute;
 	}

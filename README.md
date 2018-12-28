@@ -55,6 +55,21 @@ docker build -t xml2rdf .
 ```shell
 docker run --rm -it xml2rdf -?
 ```
+```
+Usage: xml2rdf [-?] [-xp] -g=<graphUri> -i=<inputFilePath> [-n=<namespace>]
+               -o=<outputFilePath>
+  -?, --help         display a help message
+  -g, --graphuri=<graphUri>
+                     Graph URI
+  -i, --inputfile=<inputFilePath>
+                     Path to input file (.xml or .xml.gz)
+  -n, --namespace=<namespace>
+                     Namespace for data nodes.
+                       Default: http://ids.unimaas.nl/xml2rdf/data/
+  -o, --outputfile=<outputFilePath>
+                     Path to output file (.nq or .nq.gz)
+      -xp, --xpath   Generate XPath paths in output
+```
 ## Run
 
 ### Linux / OSX
