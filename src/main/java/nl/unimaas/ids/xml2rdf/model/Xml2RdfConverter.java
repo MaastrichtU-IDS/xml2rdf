@@ -44,14 +44,14 @@ public class Xml2RdfConverter {
 	
 	private XmlDocument xmlDocument = null;
 	private XmlNode xmlNode = null;
-	private File inputFile = null;
-	private File outputFile = null;
+	private InputStream inputStream = null;
+	private OutputStream outputStream = null;
 	private IRI graphIRI = null;
 	private boolean generateXpath = false;
 	
-	public Xml2RdfConverter(File inputFile, File outputFile, String graphUri, boolean generateXpath) {
-		this.inputFile = inputFile;
-		this.outputFile = outputFile;
+	public Xml2RdfConverter(InputStream inputStream, OutputStream outputStream, String graphUri, boolean generateXpath) {
+		this.inputStream = inputStream;
+		this.outputStream = outputStream;
 		this.generateXpath = generateXpath;
 		graphIRI = valueFactory.createIRI(graphUri);
 		
@@ -60,16 +60,10 @@ public class Xml2RdfConverter {
 	}
 	
 	public Xml2RdfConverter doWork() throws XMLStreamException, UnsupportedRDFormatException, IOException {
-		OutputStream outputStream = new FileOutputStream(outputFile, false);
-		if(outputFile.getName().endsWith(".gz"))
-			outputStream = new GZIPOutputStream(outputStream);
 		RDFWriter rdfWriter = Rio.createWriter(RDFFormat.NQUADS, outputStream);
 		rdfWriter.startRDF();
 		
 		XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-		InputStream inputStream = new FileInputStream(inputFile);
-		if(inputFile.getName().toLowerCase().endsWith(".gz"))
-			inputStream = new GZIPInputStream(inputStream);
 		XMLStreamReader xmlStreamReader = xmlInputFactory.createXMLStreamReader(inputStream);
 		
 		String name = null;
@@ -97,7 +91,6 @@ public class Xml2RdfConverter {
 		
 		xmlStreamReader.close();
 		rdfWriter.endRDF();
-		outputStream.close();
 		
 		return this;
 	}

@@ -1,12 +1,19 @@
 package nl.unimaas.ids.xml2rdf;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tools.ant.DirectoryScanner;
 import org.eclipse.rdf4j.rio.UnsupportedRDFormatException;
 
 import nl.unimaas.ids.xml2rdf.model.Xml2RdfConverter;
@@ -24,14 +31,11 @@ public class Xml2rdf {
 				printUsageAndExit();
 			
 			if(!(cli.inputFilePath.endsWith(".xml") || cli.inputFilePath.endsWith(".xml.gz")))
-				throw new IllegalArgumentException("Input file-name has to end with \".xml\" or \".xml.gz\"");
+				throw new IllegalArgumentException("Input file-name has to end with \".xml\" or \".xml.gz\". Wildcards can be used for files and directories e.g. \"/data/**/*.xml.gz\"");
 			
 			if(!(cli.outputFilePath.endsWith(".nq") || cli.outputFilePath.endsWith(".nq.gz")))
-				throw new IllegalArgumentException("Output file-name has to end with \".nt.gz\"");
+				throw new IllegalArgumentException("Output file-name has to end with \".nq\" or \".nq.gz\"");
 			
-			File inputFile = new File(cli.inputFilePath);
-			if(!inputFile.exists())
-				throw new IllegalArgumentException("Unable to find the input-file in the specified location \"" + inputFile.getAbsolutePath() + "\"");
 			
 			File outputFile = new File(cli.outputFilePath);
 			if(outputFile.exists())
@@ -40,9 +44,28 @@ public class Xml2rdf {
 			if(!new File(outputFile.getAbsolutePath()).getParentFile().canWrite())
 				throw new IllegalArgumentException("Can not write to directory of output file.");
 			
-			new Xml2RdfConverter(inputFile, outputFile, cli.graphUri, cli.xpath)
-				.doWork()
-				.structuredPrint();
+			OutputStream outputStream = new FileOutputStream(outputFile, false);
+			if(outputFile.getName().endsWith(".gz"))
+			outputStream = new GZIPOutputStream(outputStream);
+
+			DirectoryScanner scanner = new DirectoryScanner();
+			scanner.setIncludes(new String[]{cli.inputFilePath});
+			scanner.setBasedir(new File("."));
+			scanner.setCaseSensitive(false);
+			scanner.scan();
+			for(String inputFilePath : scanner.getIncludedFiles()) {
+				InputStream inputStream = new FileInputStream(inputFilePath);
+				if(inputFilePath.toLowerCase().endsWith(".gz"))
+					inputStream = new GZIPInputStream(inputStream);
+				
+				new Xml2RdfConverter(inputStream, outputStream, cli.graphUri, cli.xpath)
+					.doWork()
+					.structuredPrint();
+				
+				inputStream.close();
+			}
+			outputStream.close();
+			
 		} catch (MissingParameterException | IllegalArgumentException e) {
 			printUsageAndExit(e);
 		} catch (XMLStreamException | UnsupportedRDFormatException | IOException e) {
