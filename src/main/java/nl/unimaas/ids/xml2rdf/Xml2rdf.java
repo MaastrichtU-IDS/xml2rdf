@@ -46,15 +46,15 @@ public class Xml2rdf {
 			
 			OutputStream outputStream = new FileOutputStream(outputFile, false);
 			if(outputFile.getName().endsWith(".gz"))
-			outputStream = new GZIPOutputStream(outputStream);
+				outputStream = new GZIPOutputStream(outputStream);
 
 			DirectoryScanner scanner = new DirectoryScanner();
-			scanner.setIncludes(new String[]{cli.inputFilePath});
-			scanner.setBasedir(new File("."));
+			scanner.setIncludes(new String[]{cli.inputFilePath.substring(cli.inputFilePath.startsWith("/") ? 1 : 0)});
+			scanner.setBasedir(new File("/"));
 			scanner.setCaseSensitive(false);
 			scanner.scan();
 			for(String inputFilePath : scanner.getIncludedFiles()) {
-				InputStream inputStream = new FileInputStream(inputFilePath);
+				InputStream inputStream = new FileInputStream(new File("/", inputFilePath));
 				if(inputFilePath.toLowerCase().endsWith(".gz"))
 					inputStream = new GZIPInputStream(inputStream);
 				
