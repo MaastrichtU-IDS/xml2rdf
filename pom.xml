@@ -8,10 +8,11 @@
 
 	<properties>
 		<rdf4j.version>2.4.2</rdf4j.version>
+		<ant.version>1.10.5</ant.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.rdf4j</groupId>
@@ -22,6 +23,11 @@
 			<groupId>info.picocli</groupId>
 			<artifactId>picocli</artifactId>
 			<version>3.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant</artifactId>
+			<version>${ant.version}</version>
 		</dependency>
 	</dependencies>
 
