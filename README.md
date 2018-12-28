@@ -62,7 +62,8 @@ Usage: xml2rdf [-?] [-xp] -g=<graphUri> -i=<inputFilePath> [-n=<namespace>]
   -g, --graphuri=<graphUri>
                      Graph URI
   -i, --inputfile=<inputFilePath>
-                     Path to input file (.xml or .xml.gz)
+                     Path to input file (.xml or .xml.gz). Wildcards are also
+                       supported. (see: Apache Ant DirectoryScanner)
   -n, --namespace=<namespace>
                      Namespace for data nodes.
                        Default: http://ids.unimaas.nl/xml2rdf/data/
