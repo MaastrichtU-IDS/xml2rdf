@@ -38,10 +38,17 @@ public class Xml2rdf {
 			
 			
 			File outputFile = new File(cli.outputFilePath);
-			if(outputFile.exists())
+			File outputFileAbsolutePath = new File(outputFile.getAbsolutePath());
+			if(outputFile.exists()) {
 				log.warn("Outputfile already exists and will be overwritten");
-			
-			if(!new File(outputFile.getAbsolutePath()).getParentFile().canWrite())
+			} else {
+				// Create the file and its parents
+				if (outputFileAbsolutePath.getParentFile() != null) {
+					outputFileAbsolutePath.getParentFile().mkdirs();
+				}
+				outputFileAbsolutePath.createNewFile();
+			}
+			if(!outputFileAbsolutePath.getParentFile().canWrite())
 				throw new IllegalArgumentException("Can not write to directory of output file.");
 			
 			OutputStream outputStream = new FileOutputStream(outputFile, false);
