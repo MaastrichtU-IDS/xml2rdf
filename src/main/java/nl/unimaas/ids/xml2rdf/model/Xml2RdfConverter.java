@@ -132,24 +132,24 @@ public class Xml2RdfConverter {
 		}
 	}
 	
-	public Xml2RdfConverter structuredPrint() {
-		printStructureAndStats(xmlDocument, "" , "| ");
+	public Xml2RdfConverter structuredPrint(String outputDirectory) {
+		printStructureAndStats(xmlDocument, "" , "| ", outputDirectory);
 		return this;
 	}
 	
-	private void printStructureAndStats(XmlNode node, String indent, String baseIndent) {
+	private void printStructureAndStats(XmlNode node, String indent, String baseIndent, String baseDir) {
 		System.out.println(indent + "# " + node.toString());
 		
 		// Generate template SPARQL mapping file for nodes that are arrays (more count than parent)
 		if (node.parent != null && node.count > node.parent.count) {
-			node.generateSparqltemplate(node.childs);
+			node.generateSparqltemplate(node.childs, baseDir);
 		}
 		
 		for(XmlAttribute attribute : node.attributes.values())
 			System.out.println(indent + baseIndent + "* " + attribute.toString());
 		
 		for(XmlNode child : node.childs.values())
-			printStructureAndStats(child, indent + baseIndent, baseIndent);
+			printStructureAndStats(child, indent + baseIndent, baseIndent, baseDir);
 	}
 
 }

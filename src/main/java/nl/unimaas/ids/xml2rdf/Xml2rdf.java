@@ -62,7 +62,7 @@ public class Xml2rdf {
 				
 				new Xml2RdfConverter(inputStream, outputStream, cli.graphUri, cli.namespace, cli.xpath)
 					.doWork()
-					.structuredPrint();
+					.structuredPrint(outputFile.getParent());
 				
 				inputStream.close();
 			}

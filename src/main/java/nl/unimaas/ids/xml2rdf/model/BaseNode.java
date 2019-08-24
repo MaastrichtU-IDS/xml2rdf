@@ -66,14 +66,11 @@ abstract class BaseNode {
 				+ "}"; 
 	}
 	
-	// TODO: generate template file with SPARQL mappings for this node
-	public String generateSparqltemplate(Map<String, XmlNode> childsMap) {
-		System.out.println(this.getPathString());
-		
-		// TODO: fix hard coded path. Take the directory of output file.
+	// Generate file with template SPARQL mappings for the current node
+	public void generateSparqltemplate(Map<String, XmlNode> childsMap, String baseDir) {		
 		try {
 			// Generate SPARQL mapping template file
-			PrintStream ps = new PrintStream(new FileOutputStream(new File("/data/data2services/" + this.getPathString().substring(1))));
+			PrintStream ps = new PrintStream(new FileOutputStream(new File(baseDir + "/" + this.getPathString().substring(1))));
 			PrintWriter upper = new PrintWriter(ps);
 			PrintWriter lower = new PrintWriter(ps);
 			
@@ -105,7 +102,6 @@ abstract class BaseNode {
 				String variableLabel = child.getPathString().substring(1).replaceAll("(\\.|-)", "_");
 				
 				upper.println("      property ?" + variableLabel + " ;");
-				
 				lower.println("      ?node x2rm:hasChild [");
 				lower.println("        a x2rm:" + child.getPathString().substring(1) + " ; ");
 				lower.println("        x2rm:hasValue ?" + variableLabel);
@@ -124,8 +120,6 @@ abstract class BaseNode {
 			System.out.println("Error creating the SPARQL template file: ");
 			e.printStackTrace();
 		}
-		
-		return null; 
 	}
 	
 	String toPercent(long x, long total) {
