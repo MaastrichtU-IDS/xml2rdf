@@ -67,7 +67,7 @@ abstract class BaseNode {
 	}
 	
 	// Generate file with template SPARQL mappings for the current node
-	public void generateSparqltemplate(Map<String, XmlNode> childsMap, String baseDir) {		
+	public void generateSparqltemplate(Map<String, XmlNode> childsMap, Map<String, XmlAttribute> attributesMap, String baseDir) {		
 		try {
 			// Generate SPARQL mapping template file
 			PrintStream ps = new PrintStream(new FileOutputStream(new File(baseDir + "/" + this.getPathString().substring(1))));
@@ -96,11 +96,21 @@ abstract class BaseNode {
 			lower.println("      ?node a x2rm:" + this.getPathString().substring(1) + " . ");
 			lower.println("");
 			
-			// TODO: check for attributes to map
+			// Map attributes
+			for (String key : attributesMap.keySet()) {
+				XmlAttribute attribute = attributesMap.get(key);
+				String variableLabel = attribute.getPathString().substring(1).replaceAll("(\\.|-)", "_");
+				upper.println("      property ?" + variableLabel + " ;");
+				lower.println("      ?node x2rm:hasAttribute [");
+				lower.println("        a x2rm:" + attribute.getPathString().substring(1) + " ; ");
+				lower.println("        x2rm:hasValue ?" + variableLabel);
+				lower.println("      ] .");
+			}
+			
+			// Map children (childs)
 			for (String key : childsMap.keySet()) {
 				XmlNode child = childsMap.get(key);
 				String variableLabel = child.getPathString().substring(1).replaceAll("(\\.|-)", "_");
-				
 				upper.println("      property ?" + variableLabel + " ;");
 				lower.println("      ?node x2rm:hasChild [");
 				lower.println("        a x2rm:" + child.getPathString().substring(1) + " ; ");

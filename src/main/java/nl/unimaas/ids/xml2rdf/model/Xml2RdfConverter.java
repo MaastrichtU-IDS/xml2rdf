@@ -142,7 +142,7 @@ public class Xml2RdfConverter {
 		
 		// Generate template SPARQL mapping file for nodes that are arrays (more count than parent)
 		if (node.parent != null && node.count > node.parent.count) {
-			node.generateSparqltemplate(node.childs, baseDir);
+			node.generateSparqltemplate(node.childs, node.attributes, baseDir);
 		}
 		
 		for(XmlAttribute attribute : node.attributes.values())
