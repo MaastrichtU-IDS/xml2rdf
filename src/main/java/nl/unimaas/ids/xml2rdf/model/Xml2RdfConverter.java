@@ -140,15 +140,9 @@ public class Xml2RdfConverter {
 	private void printStructureAndStats(XmlNode node, String indent, String baseIndent) {
 		System.out.println(indent + "# " + node.toString());
 		
-		try {
-			System.out.println("node parent count: " + node.parent.count);
-			System.out.println("node count: " + node.count);
-			
-			if (node.parent != null && node.count > node.parent.count) {
-				node.generateSparqltemplate();
-			}
-		} catch (NullPointerException e) {
-			System.out.println("parent is null");
+		// Generate template SPARQL mapping file for nodes that are arrays (more count than parent)
+		if (node.parent != null && node.count > node.parent.count) {
+			node.generateSparqltemplate();
 		}
 		
 		for(XmlAttribute attribute : node.attributes.values())
