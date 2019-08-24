@@ -60,6 +60,12 @@ abstract class BaseNode {
 				+ "}"; 
 	}
 	
+	// TODO: generate template file with SPARQL mappings for this node
+	public String generateSparqltemplate() {
+		System.out.println(this.getPathString());
+		return null; 
+	}
+	
 	String toPercent(long x, long total) {
 		if(total!=0)
 			return "(" + percentFormat.format( x / (double)total) + ")";
