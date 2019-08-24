@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
+import java.util.Map;
 
 import org.eclipse.rdf4j.model.IRI;
 
@@ -66,7 +67,7 @@ abstract class BaseNode {
 	}
 	
 	// TODO: generate template file with SPARQL mappings for this node
-	public String generateSparqltemplate() {
+	public String generateSparqltemplate(Map<String, XmlNode> childsMap) {
 		System.out.println(this.getPathString());
 		
 		// TODO: fix hard coded path. Take the directory of output file.
@@ -94,6 +95,17 @@ abstract class BaseNode {
 			sparqlWriter.println("  SERVICE <?_serviceUrl>  {");
 			sparqlWriter.println("    GRAPH <?_inputGraph> {");
 			sparqlWriter.println("      ?node a x2rm:" + this.getPathString().substring(1) + " . ");
+			
+			// TODO: check for attributes to map
+			for (String key : childsMap.keySet()) {
+				XmlNode child = childsMap.get(key);
+				
+				sparqlWriter.println("      ?node x2rm:hasChild [");
+				sparqlWriter.println("        a x2rm:" + child.getPathString().substring(1) + " ; ");
+				sparqlWriter.println("        x2rm:hasValue ?" + child.getPathString().substring(1).replaceAll("(\\.|-)", "_"));
+				sparqlWriter.println("      ] .");
+			}
+			
 			sparqlWriter.println("    }");
 			sparqlWriter.println("  }");
 			sparqlWriter.println("}");
