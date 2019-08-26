@@ -85,15 +85,15 @@ abstract class BaseNode {
 			upper.println("PREFIX dc: <http://purl.org/dc/elements/1.1/>");
 			upper.println("PREFIX dcterms: <http://purl.org/dc/terms/>");
 			upper.println("PREFIX bl: <https://w3id.org/biolink/vocab/>");
-			upper.println("INSERT { ");
-			upper.println("  GRAPH <?_outputGraph> {   ");
+			upper.println("INSERT {");
+			upper.println("  GRAPH <?_outputGraph> {");
 			upper.println("    ?node a owl:Thing ;");
 
 			lower.println("} WHERE {");
 			lower.println("  SERVICE <?_serviceUrl>  {");
 			lower.println("    GRAPH <?_inputGraph> {");
 			lower.println("");
-			lower.println("      ?node a x2rm:" + this.getPathString().substring(1) + " . ");
+			lower.println("      ?node a x2rm:" + this.getPathString().substring(1) + " .");
 			lower.println("");
 			
 			// Map attributes
@@ -102,7 +102,7 @@ abstract class BaseNode {
 				String variableLabel = attribute.getPathString().substring(1).replaceAll("(\\.|-)", "_");
 				upper.println("      property ?" + variableLabel + " ;");
 				lower.println("      ?node x2rm:hasAttribute [");
-				lower.println("        a x2rm:" + attribute.getPathString().substring(1) + " ; ");
+				lower.println("        a x2rm:" + attribute.getPathString().substring(1) + " ;");
 				lower.println("        x2rm:hasValue ?" + variableLabel);
 				lower.println("      ] .");
 			}
@@ -113,7 +113,7 @@ abstract class BaseNode {
 				String variableLabel = child.getPathString().substring(1).replaceAll("(\\.|-)", "_");
 				upper.println("      property ?" + variableLabel + " ;");
 				lower.println("      ?node x2rm:hasChild [");
-				lower.println("        a x2rm:" + child.getPathString().substring(1) + " ; ");
+				lower.println("        a x2rm:" + child.getPathString().substring(1) + " ;");
 				lower.println("        x2rm:hasValue ?" + variableLabel);
 				lower.println("      ] .");
 			}
