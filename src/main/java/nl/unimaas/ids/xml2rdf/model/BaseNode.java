@@ -67,10 +67,10 @@ abstract class BaseNode {
 	}
 	
 	// Generate file with template SPARQL mappings for the current node
-	public void generateSparqltemplate(Map<String, XmlNode> childsMap, Map<String, XmlAttribute> attributesMap, String baseDir) {		
+	public void generateSparqlTemplate(Map<String, XmlNode> childsMap, Map<String, XmlAttribute> attributesMap, String baseDir) {
 		try {
 			// Generate SPARQL mapping template file
-			PrintStream ps = new PrintStream(new FileOutputStream(new File(baseDir + "/" + this.getPathString().substring(1))));
+			PrintStream ps = new PrintStream(new FileOutputStream(new File(baseDir + "/" + this.getPathString().substring(1) + ".rq")));
 			PrintWriter upper = new PrintWriter(ps);
 			PrintWriter lower = new PrintWriter(ps);
 			
@@ -102,6 +102,7 @@ abstract class BaseNode {
 				String variableLabel = attribute.getPathString().substring(1).replaceAll("(\\.|-)", "_");
 				upper.println("      property ?" + variableLabel + " ;");
 				lower.println("      ?node x2rm:hasAttribute [");
+				lower.println("");
 				lower.println("        a x2rm:" + attribute.getPathString().substring(1) + " ;");
 				lower.println("        x2rm:hasValue ?" + variableLabel);
 				lower.println("      ] .");
