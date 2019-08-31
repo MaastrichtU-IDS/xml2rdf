@@ -102,10 +102,10 @@ abstract class BaseNode {
 				String variableLabel = attribute.getPathString().substring(1).replaceAll("(\\.|-)", "_");
 				upper.println("      property ?" + variableLabel + " ;");
 				lower.println("      ?node x2rm:hasAttribute [");
-				lower.println("");
 				lower.println("        a x2rm:" + attribute.getPathString().substring(1) + " ;");
 				lower.println("        x2rm:hasValue ?" + variableLabel);
 				lower.println("      ] .");
+				lower.println("");
 			}
 			
 			// Map children (childs)
