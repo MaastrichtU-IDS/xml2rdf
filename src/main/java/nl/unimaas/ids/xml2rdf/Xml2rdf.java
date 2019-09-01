@@ -60,7 +60,7 @@ public class Xml2rdf {
 				if(inputFilePath.toLowerCase().endsWith(".gz"))
 					inputStream = new GZIPInputStream(inputStream);
 				
-				new Xml2RdfConverter(inputStream, outputStream, cli.graphUri, cli.namespace, cli.xpath)
+				new Xml2RdfConverter(inputStream, outputStream, cli.graphUri, cli.namespace, cli.expandRdf)
 					.doWork()
 					.structuredPrint(outputFile.getParent());
 				

@@ -42,12 +42,12 @@ public class Xml2RdfConverter {
 	private InputStream inputStream = null;
 	private OutputStream outputStream = null;
 	private IRI graphIRI = null;
-	private boolean generateXpath = false;
+	private boolean expandRdf = false;
 	
-	public Xml2RdfConverter(InputStream inputStream, OutputStream outputStream, String graphUri, String namespace, boolean generateXpath) {
+	public Xml2RdfConverter(InputStream inputStream, OutputStream outputStream, String graphUri, String namespace, boolean expandRdf) {
 		this.inputStream = inputStream;
 		this.outputStream = outputStream;
-		this.generateXpath = generateXpath;
+		this.expandRdf = expandRdf;
 		this.namespace = namespace;
 		graphIRI = valueFactory.createIRI(graphUri);
 		
@@ -95,39 +95,55 @@ public class Xml2RdfConverter {
 		// first element, let's create the XmlNode subclass
 		if(node.isNew) {
 			rdfWriter.handleStatement(valueFactory.createStatement(node.class_iri, SUB_CLASS_OF, XML_ELEMENT, graphIRI));
-			rdfWriter.handleStatement(valueFactory.createStatement(node.class_iri, HAS_NAME, valueFactory.createLiteral(node.name), graphIRI));
-			if(generateXpath)
+			if(expandRdf) {
+				rdfWriter.handleStatement(valueFactory.createStatement(node.class_iri, HAS_NAME, valueFactory.createLiteral(node.name), graphIRI));
 				rdfWriter.handleStatement(valueFactory.createStatement(node.class_iri, HAS_XPATH, valueFactory.createLiteral(node.getRelativeXPath()), graphIRI));
+			}
 			if(!node.parent.isRoot()) {
-				rdfWriter.handleStatement(valueFactory.createStatement(node.parent.class_iri, HAS_CHILD, node.class_iri, graphIRI));
+				if (expandRdf) {
+					rdfWriter.handleStatement(valueFactory.createStatement(node.parent.class_iri, HAS_CHILD, node.class_iri, graphIRI));
+				} else {
+			        rdfWriter.handleStatement(valueFactory.createStatement(node.parent.iri, valueFactory.createIRI(X2RM, "child:" + node.name), node.iri, graphIRI));
+				}
 			}
 			node.isNew = false;
 		}
 		node.attributes.values().stream().filter(v -> v.isNew).forEach(attribute -> {
-			rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, SUB_CLASS_OF, XML_ATTRIBUTE, graphIRI));
-			rdfWriter.handleStatement(valueFactory.createStatement(node.class_iri, HAS_ATTRIBUTE, attribute.class_iri, graphIRI));
-			rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_NAME, valueFactory.createLiteral(attribute.name), graphIRI));
-			if(generateXpath)
+			if(expandRdf) {
+				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, SUB_CLASS_OF, XML_ATTRIBUTE, graphIRI));
+				rdfWriter.handleStatement(valueFactory.createStatement(node.class_iri, HAS_ATTRIBUTE, attribute.class_iri, graphIRI));
+				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_NAME, valueFactory.createLiteral(attribute.name), graphIRI));
 				rdfWriter.handleStatement(valueFactory.createStatement(attribute.class_iri, HAS_XPATH, valueFactory.createLiteral(attribute.getRelativeXPath()), graphIRI));
+			}
 			attribute.isNew = false;
 		});
 		
 		// now the data
 		rdfWriter.handleStatement(valueFactory.createStatement(node.iri, TYPE, node.class_iri, graphIRI));
 		if(!node.parent.isRoot())
-			rdfWriter.handleStatement(valueFactory.createStatement(node.parent.iri, HAS_CHILD, node.iri, graphIRI));
+			if(expandRdf) {
+				rdfWriter.handleStatement(valueFactory.createStatement(node.parent.iri, HAS_CHILD, node.iri, graphIRI));
+			} else {
+				rdfWriter.handleStatement(valueFactory.createStatement(node.parent.iri, valueFactory.createIRI(X2RM, "child:" + node.name), node.iri, graphIRI));
+			}
 		if(node.value != null)
 			rdfWriter.handleStatement(valueFactory.createStatement(node.iri, HAS_VALUE, valueFactory.createLiteral(node.value), graphIRI));
-		if(generateXpath)
+		if(expandRdf) {
 			rdfWriter.handleStatement(valueFactory.createStatement(node.iri, HAS_XPATH, valueFactory.createLiteral(node.getAbsoluteXpath()), graphIRI));
+		}
 		
 		for(XmlAttribute attribute : node.actualAttributes.values()) {
-			rdfWriter.handleStatement(valueFactory.createStatement(node.iri, HAS_ATTRIBUTE, attribute.iri, graphIRI));
-			rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, TYPE , attribute.class_iri, graphIRI));
-			if(generateXpath)
+			if(expandRdf) {
+				rdfWriter.handleStatement(valueFactory.createStatement(node.iri, HAS_ATTRIBUTE, attribute.iri, graphIRI));
+				rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, TYPE , attribute.class_iri, graphIRI));
 				rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, HAS_XPATH, valueFactory.createLiteral(attribute.getAbsoluteXpath()), graphIRI));
-			if(attribute.value != null && !attribute.value.isEmpty()) {
-				rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, HAS_VALUE, valueFactory.createLiteral(attribute.value), graphIRI));
+				if(attribute.value != null && !attribute.value.isEmpty()) {
+					rdfWriter.handleStatement(valueFactory.createStatement(attribute.iri, HAS_VALUE, valueFactory.createLiteral(attribute.value), graphIRI));
+				}
+				
+			} else if(attribute.value != null && !attribute.value.isEmpty()) {
+		        // Can a attribute value be empty? In this case we don't record the attribute?
+		        rdfWriter.handleStatement(valueFactory.createStatement(node.iri, valueFactory.createIRI(X2RM, "attribute:" + attribute.name), valueFactory.createLiteral(attribute.value), graphIRI));
 			}
 		}
 	}
