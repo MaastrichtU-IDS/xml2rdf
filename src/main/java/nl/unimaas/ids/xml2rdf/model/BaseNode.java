@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
-import java.util.Map;
 
 import org.eclipse.rdf4j.model.IRI;
 
