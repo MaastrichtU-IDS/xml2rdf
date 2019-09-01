@@ -86,13 +86,13 @@ abstract class BaseNode {
 			upper.println("PREFIX dcterms: <http://purl.org/dc/terms/>");
 			upper.println("PREFIX bl: <https://w3id.org/biolink/vocab/>");
 			upper.println("INSERT {");
-			upper.println("  GRAPH <?_outputGraph> {");
+			upper.println("  GRAPH <?_output> {");
 			upper.println("    ?nodeUri a owl:Thing ;");
 
 			lower.println("    .");
 			lower.println("} WHERE {");
-			lower.println("  SERVICE <?_serviceUrl>  {");
-			lower.println("    GRAPH <?_inputGraph> {");
+			lower.println("  SERVICE <?_service>  {");
+			lower.println("    GRAPH <?_input> {");
 			lower.println("");
 			lower.println("      ?" + node.name + "Node a x2rm:" + this.getPathString().substring(1) + " .");
 			lower.println("      # Example for building URI using md5 string hashing");
