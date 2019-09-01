@@ -67,7 +67,8 @@ abstract class BaseNode {
 	}
 	
 	// Generate file with template SPARQL mappings for the current node
-	public void generateSparqlTemplate(Map<String, XmlNode> childsMap, Map<String, XmlAttribute> attributesMap, String baseDir) {
+	// public void generateSparqlTemplate(Map<String, XmlNode> childsMap, Map<String, XmlAttribute> attributesMap, String baseDir) {
+	public void generateSparqlTemplate(XmlNode node, String baseDir) {
 		try {
 			// Generate SPARQL mapping template file
 			PrintStream ps = new PrintStream(new FileOutputStream(new File(baseDir + "/" + this.getPathString().substring(1) + ".rq")));
@@ -89,18 +90,19 @@ abstract class BaseNode {
 			upper.println("  GRAPH <?_outputGraph> {");
 			upper.println("    ?nodeUri a owl:Thing ;");
 
+			lower.println("    .");
 			lower.println("} WHERE {");
 			lower.println("  SERVICE <?_serviceUrl>  {");
 			lower.println("    GRAPH <?_inputGraph> {");
 			lower.println("");
-			lower.println("      ?node a x2rm:" + this.getPathString().substring(1) + " .");
+			lower.println("      ?" + node.name + "Node a x2rm:" + this.getPathString().substring(1) + " .");
 			lower.println("      # Example for building URI using md5 string hashing");
-			lower.println("      BIND(iri(concat(\"https://identifiers.org/\", md5(?nodeId))) AS nodeUri)");
+			lower.println("      # BIND(iri(concat(\"https://identifiers.org/\", md5(?nodeId))) AS ?nodeUri)");
 			lower.println("");
 			
 			// Map attributes
-			for (String key : attributesMap.keySet()) {
-				XmlAttribute attribute = attributesMap.get(key);
+			for (String key : node.attributes.keySet()) {
+				XmlAttribute attribute = node.attributes.get(key);
 				// For expand:
 //				String variableLabel = attribute.getPathString().substring(1).replaceAll("(\\.|-)", "_");
 //				upper.println("      property ?" + variableLabel + " ;");
@@ -109,17 +111,25 @@ abstract class BaseNode {
 //				lower.println("        x2rm:hasValue ?" + variableLabel);
 //				lower.println("      ] .");
 		        upper.println("      property ?" + attribute.name + " ;");
-		        lower.println("      ?node x2rm:attribute:" + attribute.name + " ?" + attribute.name + " .");
+		        lower.println("      OPTIONAL{ ?" + node.name + "Node x2rm:attribute:" + attribute.name + " ?" + attribute.name + " . }");
 				lower.println("");
 			}
 			
+			// If Node have a direct value
+			// TODO: error with embedded fieldslike <i> or <sup> in pubmed
+			upper.println("      property ?" + node.name + "Value ;");
+			lower.println("      # To get the value of the node, to remove if node only has children");
+	        lower.println("      OPTIONAL{ ?" + node.name + "Node x2rm:hasValue ?" + node.name + "Value . }");
+			
 			// Map children (childs)
-			for (String key : childsMap.keySet()) {
-				XmlNode child = childsMap.get(key);
+			for (String key : node.childs.keySet()) {
+				XmlNode child = node.childs.get(key);
 				upper.println("      property ?" + child.name + " ;");
-		        lower.println("      ?node x2rm:child:" + child.name + " [");
-		        lower.println("        x2rm:hasValue ?" + child.name);
-		        lower.println("      ] .");
+				lower.println("      OPTIONAL{");
+		        lower.println("        ?" + node.name + "Node x2rm:child:" + child.name + " [");
+		        lower.println("          x2rm:hasValue ?" + child.name);
+		        lower.println("        ] .");
+		        lower.println("      }");
 				// For expand:
 //				String variableLabel = child.getPathString().substring(1).replaceAll("(\\.|-)", "_");
 //				upper.println("      property ?" + variableLabel + " ;");
@@ -128,6 +138,7 @@ abstract class BaseNode {
 //				lower.println("        x2rm:hasValue ?" + variableLabel);
 //				lower.println("      ] .");
 			}
+			
 			upper.println("  }");
 			lower.println("    }");
 			lower.println("  }");
