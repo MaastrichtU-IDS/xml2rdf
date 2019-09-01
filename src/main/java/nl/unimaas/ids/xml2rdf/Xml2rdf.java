@@ -30,8 +30,8 @@ public class Xml2rdf {
 			if(cli.help) 
 				printUsageAndExit();
 			
-			if(!(cli.inputFilePath.endsWith(".xml") || cli.inputFilePath.endsWith(".xml.gz")))
-				throw new IllegalArgumentException("Input file-name has to end with \".xml\" or \".xml.gz\". Wildcards can be used for files and directories e.g. \"/data/**/*.xml.gz\"");
+			if(!(cli.inputFilePath.endsWith(".xml") || cli.inputFilePath.endsWith(".xml.gz") || cli.inputFilePath.endsWith(".xml*")))
+				throw new IllegalArgumentException("Input file-name has to end with \".xml\" or \".xml.gz\" or \".xml*\". Wildcards can be used for files and directories e.g. \"/data/**/*.xml.gz\"");
 			
 			if(!(cli.outputFilePath.endsWith(".nq") || cli.outputFilePath.endsWith(".nq.gz")))
 				throw new IllegalArgumentException("Output file-name has to end with \".nq\" or \".nq.gz\"");
