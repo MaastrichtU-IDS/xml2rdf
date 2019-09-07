@@ -69,6 +69,7 @@ abstract class BaseNode {
 	// public void generateSparqlTemplate(Map<String, XmlNode> childsMap, Map<String, XmlAttribute> attributesMap, String baseDir) {
 	public void generateSparqlTemplate(XmlNode node, String baseDir) {
 		try {
+			new File(baseDir).mkdirs();
 			// Generate SPARQL mapping template file
 			PrintStream ps = new PrintStream(new FileOutputStream(new File(baseDir + "/" + this.getPathString().substring(1) + ".rq")));
 			PrintWriter upper = new PrintWriter(ps);
