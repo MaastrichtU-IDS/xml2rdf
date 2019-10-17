@@ -111,7 +111,7 @@ abstract class BaseNode {
 //				lower.println("        x2rm:hasValue ?" + variableLabel);
 //				lower.println("      ] .");
 		        upper.println("      property ?" + attribute.name + " ;");
-		        lower.println("      OPTIONAL{ ?" + node.name + "Node x2rm:attribute:" + attribute.name + " ?" + attribute.name + " . }");
+		        lower.println("      OPTIONAL{ ?" + node.name + "Node x2rm:attribute_" + attribute.name + " ?" + attribute.name + " . }");
 				lower.println("");
 			}
 			
@@ -126,7 +126,7 @@ abstract class BaseNode {
 				XmlNode child = node.childs.get(key);
 				upper.println("      property ?" + child.name + " ;");
 				lower.println("      OPTIONAL{");
-		        lower.println("        ?" + node.name + "Node x2rm:child:" + child.name + " [");
+		        lower.println("        ?" + node.name + "Node x2rm:child_" + child.name + " [");
 		        lower.println("          x2rm:hasValue ?" + child.name);
 		        lower.println("        ] .");
 		        lower.println("      }");

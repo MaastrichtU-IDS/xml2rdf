@@ -103,7 +103,7 @@ public class Xml2RdfConverter {
 				if (expandRdf) {
 					rdfWriter.handleStatement(valueFactory.createStatement(node.parent.class_iri, HAS_CHILD, node.class_iri, graphIRI));
 				} else {
-			        rdfWriter.handleStatement(valueFactory.createStatement(node.parent.iri, valueFactory.createIRI(X2RM, "child:" + node.name), node.iri, graphIRI));
+			        rdfWriter.handleStatement(valueFactory.createStatement(node.parent.iri, valueFactory.createIRI(X2RM, "child_" + node.name), node.iri, graphIRI));
 				}
 			}
 			node.isNew = false;
@@ -124,7 +124,7 @@ public class Xml2RdfConverter {
 			if(expandRdf) {
 				rdfWriter.handleStatement(valueFactory.createStatement(node.parent.iri, HAS_CHILD, node.iri, graphIRI));
 			} else {
-				rdfWriter.handleStatement(valueFactory.createStatement(node.parent.iri, valueFactory.createIRI(X2RM, "child:" + node.name), node.iri, graphIRI));
+				rdfWriter.handleStatement(valueFactory.createStatement(node.parent.iri, valueFactory.createIRI(X2RM, "child_" + node.name), node.iri, graphIRI));
 			}
 		if(node.value != null)
 			rdfWriter.handleStatement(valueFactory.createStatement(node.iri, HAS_VALUE, valueFactory.createLiteral(node.value), graphIRI));
@@ -143,7 +143,7 @@ public class Xml2RdfConverter {
 				
 			} else if(attribute.value != null && !attribute.value.isEmpty()) {
 		        // Can a attribute value be empty? In this case we don't record the attribute?
-		        rdfWriter.handleStatement(valueFactory.createStatement(node.iri, valueFactory.createIRI(X2RM, "attribute:" + attribute.name), valueFactory.createLiteral(attribute.value), graphIRI));
+		        rdfWriter.handleStatement(valueFactory.createStatement(node.iri, valueFactory.createIRI(X2RM, "attribute_" + attribute.name), valueFactory.createLiteral(attribute.value), graphIRI));
 			}
 		}
 	}
