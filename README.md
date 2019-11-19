@@ -4,7 +4,7 @@
 # About
 This tool converts any xml file into a generic rdf model.
 
-See the [Data2Services documentation](http://d2s.semanticscience.org/) to run xml2rdf as part of workflows to generate RDF knowledge graph out of structured data.
+See the [Data2Services documentation](http://d2s.semanticscience.org/) to run xml2rdf as part of workflows to generate RDF knowledge graph from structured data.
 
 ## RDF model
 ```shell
