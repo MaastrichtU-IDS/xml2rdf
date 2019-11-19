@@ -3,6 +3,9 @@
 
 # About
 This tool converts any xml file into a generic rdf model.
+
+See the [Data2Services documentation](http://d2s.semanticscience.org/) to run xml2rdf as part of workflows to generate RDF knowledge graph out of structured data.
+
 ## RDF model
 ```shell
 PREFIX x2rm: <http://ids.unimaas.nl/rdf2xml/model#>
@@ -75,12 +78,17 @@ Usage: xml2rdf [-?] [-xp] -g=<graphUri> -i=<inputFilePath> [-n=<namespace>]
 
 ### Linux / OSX
 ```shell
-docker run --rm -it -v /data/xml2rdfdata:/data xml2rdf  -i "/data/input.xml.gz" -o "/data/output.nq.gz" -g "http://kraken/xml2rdf/graph"
+docker run --rm -it -v /home/d2s:/data xml2rdf  -i "/data/input.xml.gz" -o "/data/output.nq.gz" -g "http://kraken/xml2rdf/graph"
 ```
+> For a file on `/home/d2s/input.xml.gz`
+
 ### Windows
+
 ```shell
-docker run --rm -it -v c:/data/xml2rdfdata:/data xml2rdf  -i "/data/input.xml.gz" -o "/data/output.nq.gz" -g "http://kraken/xml2rdf/graph"
+docker run --rm -it -v c:/home/d2s:/data xml2rdf  -i "/data/input.xml.gz" -o "/data/output.nq.gz" -g "http://kraken/xml2rdf/graph"
 ```
 
-More information on the use of docker can be found at [DSRI docker documentation](http://d2s.semanticscience.org/docs/guide-docker)
+> For a file on `c:/home/d2s/input.xml.gz`
+
+More information on the use of docker can be found at [DSRI docker documentation](http://d2s.semanticscience.org/docs/guide-docker).
 
