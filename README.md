@@ -81,3 +81,6 @@ docker run --rm -it -v /data/xml2rdfdata:/data xml2rdf  -i "/data/input.xml.gz" 
 ```shell
 docker run --rm -it -v c:/data/xml2rdfdata:/data xml2rdf  -i "/data/input.xml.gz" -o "/data/output.nq.gz" -g "http://kraken/xml2rdf/graph"
 ```
+
+More information on the use of docker can be found at [DSRI docker documentation](http://d2s.semanticscience.org/docs/guide-docker)
+
